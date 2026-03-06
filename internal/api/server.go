@@ -23,6 +23,7 @@ func NewServer(cfg config.Config, svc *core.Service, authz *auth.Auth) *Server {
 func (s *Server) Handler() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/healthz", s.health)
+	mux.HandleFunc("/readyz", s.ready)
 	mux.Handle("/v1/capabilities", s.authz.Middleware(http.HandlerFunc(s.capabilities)))
 	mux.Handle("/v1/station/health", s.authz.Middleware(http.HandlerFunc(s.stationHealth)))
 	mux.Handle("/v1/readings/latest", s.authz.Middleware(http.HandlerFunc(s.readingsLatest)))
@@ -36,6 +37,15 @@ func (s *Server) Handler() http.Handler {
 
 func (s *Server) health(w http.ResponseWriter, _ *http.Request) {
 	writeJSON(w, http.StatusOK, map[string]any{"status": "ok"})
+}
+
+func (s *Server) ready(w http.ResponseWriter, _ *http.Request) {
+	ready := s.svc.Readiness()
+	code := http.StatusOK
+	if !ready.Ready {
+		code = http.StatusServiceUnavailable
+	}
+	writeJSON(w, code, ready)
 }
 
 func (s *Server) capabilities(w http.ResponseWriter, _ *http.Request) {

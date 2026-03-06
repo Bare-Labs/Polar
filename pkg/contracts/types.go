@@ -64,6 +64,14 @@ type StationHealth struct {
 	GeneratedAt time.Time         `json:"generated_at"`
 }
 
+type ReadinessStatus struct {
+	StationID   string            `json:"station_id"`
+	Ready       bool              `json:"ready"`
+	Status      string            `json:"status"`
+	Components  []ComponentHealth `json:"components"`
+	GeneratedAt time.Time         `json:"generated_at"`
+}
+
 type DataGap struct {
 	Metric      string    `json:"metric"`
 	From        time.Time `json:"from"`

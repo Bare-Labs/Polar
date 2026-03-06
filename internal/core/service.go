@@ -112,6 +112,28 @@ func (s *Service) StationHealth() contracts.StationHealth {
 	return contracts.StationHealth{StationID: s.cfg.Station.ID, Overall: overall, Components: components, GeneratedAt: now}
 }
 
+func (s *Service) Readiness() contracts.ReadinessStatus {
+	health := s.StationHealth()
+	ready := true
+	for _, c := range health.Components {
+		if c.Status == "starting" || c.Status == "degraded" {
+			ready = false
+			break
+		}
+	}
+	status := "ready"
+	if !ready {
+		status = "not_ready"
+	}
+	return contracts.ReadinessStatus{
+		StationID:   health.StationID,
+		Ready:       ready,
+		Status:      status,
+		Components:  health.Components,
+		GeneratedAt: health.GeneratedAt,
+	}
+}
+
 func statusFor(last time.Time, maxLag time.Duration) string {
 	if last.IsZero() {
 		return "starting"

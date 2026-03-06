@@ -21,6 +21,7 @@ make run
 Auth token default: `dev-token`
 
 REST health: `GET http://localhost:8080/healthz`
+REST readiness: `GET http://localhost:8080/readyz`
 MCP health: `GET http://localhost:8081/healthz`
 
 ## REST Endpoints

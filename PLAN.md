@@ -88,7 +88,7 @@ Polar must be deployable in unattended environments and engineered for productio
 
 ### REST baseline
 - [x] `GET /healthz`
-- [ ] `GET /readyz`
+- [x] `GET /readyz`
 - [x] `GET /v1/capabilities`
 - [x] `GET /v1/station/health`
 - [x] `GET /v1/readings/latest`
@@ -205,7 +205,7 @@ Polar must be deployable in unattended environments and engineered for productio
 
 ### Health endpoints
 - [x] `healthz`: process alive.
-- [ ] `readyz`: dependencies and subsystem readiness.
+- [x] `readyz`: dependencies and subsystem readiness.
 - [x] subsystem health breakdown in station health payload.
 
 ### Tracing (phase 2)
